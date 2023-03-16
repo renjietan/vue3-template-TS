@@ -27,12 +27,12 @@
 <script setup lang="ts" name="loginIndex">
 import { defineAsyncComponent, onMounted, reactive, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useThemeConfig } from '/@/stores/themeConfig';
-import { NextLoading } from '/@/utils/loading';
+import { useThemeConfig } from '@/stores/themeConfig';
+import { NextLoading } from '@/utils/loading';
 
 // 引入组件
-const Account = defineAsyncComponent(() => import('/@/views/login/component/account.vue'));
-const Mobile = defineAsyncComponent(() => import('/@/views/login/component/mobile.vue'));
+const Account = defineAsyncComponent(() => import('@/views/login/component/account.vue'));
+const Mobile = defineAsyncComponent(() => import('@/views/login/component/mobile.vue'));
 
 // 定义变量内容
 const storesThemeConfig = useThemeConfig();

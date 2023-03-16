@@ -26,8 +26,8 @@
 import { onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
 import { storeToRefs } from 'pinia';
-import { useUserInfo } from '/@/stores/userInfo';
-import { frontEndsResetRoute, setAddRoute, setFilterMenuAndCacheTagsViewRoutes } from '/@/router/frontEnd';
+import { useUserInfo } from '@/stores/userInfo';
+import { frontEndsResetRoute, setAddRoute, setFilterMenuAndCacheTagsViewRoutes } from '@/router/frontEnd';
 
 // 定义变量内容
 const storesUserInfo = useUserInfo();

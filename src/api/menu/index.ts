@@ -1,4 +1,4 @@
-import request from '/@/utils/request';
+import request from '@/utils/request';
 
 /**
  * 后端控制路由，isRequestRoutes 为 true，则开启后端控制路由

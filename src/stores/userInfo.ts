@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
-import { Session } from '/@/utils/storage';
+import { Session } from '@/utils/storage';
 
 /**
  * 用户信息
