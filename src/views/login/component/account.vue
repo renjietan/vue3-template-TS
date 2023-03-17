@@ -1,7 +1,7 @@
 <template>
 	<el-form size="large" class="login-content-form">
 		<el-form-item class="login-animation1">
-			<el-input text placeholder="用户名" v-model="state.ruleForm.userName" clearable autocomplete="off">
+			<el-input text placeholder="用户名" v-model="state.form_data.userName" clearable autocomplete="off">
 				<template #prefix>
 					<el-icon class="el-input__icon"><ele-User /></el-icon>
 				</template>
@@ -9,7 +9,7 @@
 		</el-form-item>
 		<el-form-item class="login-animation2">
 			<el-input :type="state.isShowPassword ? 'text' : 'password'" placeholder="密码"
-				v-model="state.ruleForm.password" autocomplete="off">
+				v-model="state.form_data.password" autocomplete="off">
 				<template #prefix>
 					<el-icon class="el-input__icon"><ele-Unlock /></el-icon>
 				</template>
@@ -24,7 +24,7 @@
 		<el-form-item class="login-animation3">
 			<el-col :span="15">
 				<el-input text maxlength="4" :placeholder="$t('message.account.accountPlaceholder3')"
-					v-model="state.ruleForm.code" clearable autocomplete="off">
+					v-model="state.form_data.code" clearable autocomplete="off">
 					<template #prefix>
 						<el-icon class="el-input__icon"><ele-Position /></el-icon>
 					</template>
@@ -37,7 +37,7 @@
 		</el-form-item>
 		<el-form-item class="login-animation4">
 			<el-button type="primary" class="login-content-submit" round v-waves @click="onSignIn"
-				:loading="state.loading.signIn">
+				:loading="state.signIn">
 				<span>登录</span>
 			</el-button>
 		</el-form-item>
@@ -52,6 +52,7 @@
 	import Cookies from 'js-cookie';
 	import { storeToRefs } from 'pinia';
 	import { useThemeConfig } from '@/stores/themeConfig';
+	import { userInfoStore } from "@/stores/userInfo";
 	import { initFrontEndControlRoutes } from '@/router/frontEnd';
 	import { initBackEndControlRoutes } from '@/router/backEnd';
 	import { Session } from '@/utils/storage';
@@ -65,21 +66,21 @@
 	const router = useRouter();
 	const state = reactive({
 		isShowPassword: false,
-		ruleForm: {
+		form_data: {
 			userName: 'admin',
 			password: '123456',
 			code: '1234',
 		},
-		loading: {
-			signIn: false,
-		},
+		loading: false,
 	});
 
 	// 登录
 	const onSignIn = async () => {
-		state.loading.signIn = true;
+		state.loading = true;
+		userInfoStore().userLogin(state.form_data)
+		return
 		Session.set('token', Math.random().toString(36).substr(0));
-		Cookies.set('userName', state.ruleForm.userName);
+		Cookies.set('userName', state.form_data.userName);
 		if (route.query?.redirect) {
 			router.push({
 				path: route.query?.redirect,

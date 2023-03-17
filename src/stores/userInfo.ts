@@ -1,22 +1,31 @@
 import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 import { Session } from '@/utils/storage';
+import { login } from "@/api/login/index";
+import { Axios, AxiosResponse } from "axios"
 
-/**
- * 用户信息
- * @methods setUserInfos 设置用户信息
- */
-export const useUserInfo = defineStore('userInfo', {
+
+export const userInfoStore = defineStore('userInfo', {
 	state: (): UserInfosState => ({
 		userInfos: {
+			// TODO(2023-03-16 14:13:41 谭人杰): 要删除
 			userName: '',
+			// TODO(2023-03-16 14:13:41 谭人杰): 要删除
 			photo: '',
 			time: 0,
 			roles: [],
 			authBtnList: [],
+			userInfo: {},
 		},
 	}),
 	actions: {
+		async userLogin(data: Object) {
+			let res = await login(data)
+			debugger
+			this.$patch((state) => {
+				state.userInfos.userInfo = res
+			})
+		},
 		async setUserInfos() {
 			// 存储用户信息到浏览器缓存
 			if (Session.get('userInfo')) {
