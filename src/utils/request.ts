@@ -2,6 +2,7 @@ import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Session } from '@/utils/storage';
 import qs from 'qs';
+import Cookies from 'js-cookie';
 
 // 配置新建一个 axios 实例
 const service: AxiosInstance = axios.create({
@@ -19,7 +20,7 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
 	(config: AxiosRequestConfig) => {
 		// 在发送请求之前做些什么 token
-		if (Session.get('token')) {
+		if (Cookies.get('token')) {
 			config.headers!['Authorization'] = `${Session.get('token')}`;
 		}
 		return config;

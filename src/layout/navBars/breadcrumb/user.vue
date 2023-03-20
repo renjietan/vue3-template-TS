@@ -87,7 +87,7 @@ import { ElMessageBox, ElMessage } from 'element-plus';
 import screenfull from 'screenfull';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
-import { userInfoStore } from '@/stores/userInfo';
+import { userStore } from '@/stores/user';
 import { useThemeConfig } from '@/stores/themeConfig';
 import other from '@/utils/other';
 import mittBus from '@/utils/mitt';
@@ -100,7 +100,7 @@ const Search = defineAsyncComponent(() => import('@/layout/navBars/breadcrumb/se
 // 定义变量内容
 const { locale, t } = useI18n();
 const router = useRouter();
-const stores = userInfoStore();
+const stores = userStore();
 const storesThemeConfig = useThemeConfig();
 const { userInfos } = storeToRefs(stores);
 const { themeConfig } = storeToRefs(storesThemeConfig);

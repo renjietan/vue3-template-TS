@@ -26,11 +26,11 @@
 import { onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
 import { storeToRefs } from 'pinia';
-import { userInfoStore } from '@/stores/userInfo';
+import { userStore } from '@/stores/user';
 import { frontEndsResetRoute, setAddRoute, setFilterMenuAndCacheTagsViewRoutes } from '@/router/frontEnd';
 
 // 定义变量内容
-const storesUserInfo = userInfoStore();
+const storesUserInfo = userStore();
 const { userInfos } = storeToRefs(storesUserInfo);
 const userAuth = ref('');
 

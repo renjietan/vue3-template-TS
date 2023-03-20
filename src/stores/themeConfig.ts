@@ -130,6 +130,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 后端控制路由
 			 */
 			// 是否开启后端控制路由
+			//TODO(@date:2023-03-19 15:46:41 谭人杰): $删除
 			isRequestRoutes: false,
 
 			/**

@@ -2,11 +2,50 @@ import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 import { Session } from '@/utils/storage';
 import { login } from "@/api/login/index";
-import { Axios, AxiosResponse } from "axios"
+import { dynamicRoutes } from '@/router/route'
+import router from '@/router';
+const layouModules: any = import.meta.glob('../layout/routerView/*.{vue,tsx}');
+const viewsModules: any = import.meta.glob('../views/**/*.{vue,tsx}');
+const dynamicViewsModules: Record<string, Function> = Object.assign({}, { ...layouModules }, { ...viewsModules });
 
+/**
+ * 后端路由 component 转换
+ * @param routes 后端返回的路由表数组
+ * @returns 返回处理成函数后的 component
+ */
+export function backEndComponent(routes: any) {
+	if (!routes) return;
+	return routes.map((item: any) => {
+		if (item.component) item.component = dynamicImport(dynamicViewsModules, item.component as string);
+		item.children && backEndComponent(item.children);
+		return item;
+	});
+}
+/**
+ * 后端路由 component 转换函数
+ * @param dynamicViewsModules 获取目录下的 .vue、.tsx 全部文件
+ * @param component 当前要处理项 component
+ * @returns 返回处理成函数后的 component
+ */
+export function dynamicImport(dynamicViewsModules: Record<string, Function>, component: string) {
+	const keys = Object.keys(dynamicViewsModules);
+	const matchKeys = keys.filter((key) => {
+		const k = key.replace(/..\/views|../, '');
+		return k.startsWith(`${component}`) || k.startsWith(`/${component}`);
+	});
+	if (matchKeys?.length === 1) {
+		const matchKey = matchKeys[0];
+		return dynamicViewsModules[matchKey];
+	}
+	if (matchKeys?.length > 1) {
+		return false;
+	}
+}
 
-export const userInfoStore = defineStore('userInfo', {
-	state: (): UserInfosState => ({
+export const userStore = defineStore('userInfo', {
+	state: () => ({
+		userInfo: {},
+		menus: [],
 		userInfos: {
 			// TODO(2023-03-16 14:13:41 谭人杰): 要删除
 			userName: '',
@@ -15,15 +54,31 @@ export const userInfoStore = defineStore('userInfo', {
 			time: 0,
 			roles: [],
 			authBtnList: [],
-			userInfo: {},
 		},
 	}),
 	actions: {
-		async userLogin(data: Object) {
-			let res = await login(data)
-			debugger
-			this.$patch((state) => {
-				state.userInfos.userInfo = res
+		login(data: Object) {
+			// let res = await login(data)
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					let res = {
+						userName: "",
+						token: Math.random().toString(36),
+						avatar: "https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500"
+					}
+					Cookies.set("userInfo", JSON.stringify(res))
+					Cookies.set("token", res.token)
+					this.$patch({
+						userInfo: res
+					})
+					resolve(res)
+				}, 1500)
+			})
+		},
+		setMenus() {
+			return new Promise(async (resolve, reject) => {
+				dynamicRoutes[0].children = await backEndComponent(dynamicRoutes[0].children);
+				resolve(dynamicRoutes)
 			})
 		},
 		async setUserInfos() {

@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import pinia from '@/stores/index';
-import { userInfoStore } from '@/stores/userInfo';
+import { userStore } from '@/stores/user';
 import { useRequestOldRoutes } from '@/stores/requestOldRoutes';
 import { Session } from '@/utils/storage';
 import { NextLoading } from '@/utils/loading';
@@ -28,7 +28,7 @@ const dynamicViewsModules: Record<string, Function> = Object.assign({}, { ...lay
 /**
  * 后端控制路由：初始化方法，防止刷新时路由丢失
  * @method NextLoading 界面 loading 动画开始执行
- * @method userInfoStore().setUserInfos() 触发初始化用户信息 pinia
+ * @method userStore().setUserInfos() 触发初始化用户信息 pinia
  * @method useRequestOldRoutes().setRequestOldRoutes() 存储接口原始路由（未处理component），根据需求选择使用
  * @method setAddRoute 添加动态路由
  * @method setFilterMenuAndCacheTagsViewRoutes 设置路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
@@ -39,7 +39,7 @@ export async function initBackEndControlRoutes() {
 	// 无 token 停止执行下一步
 	if (!Session.get('token')) return false;
 	// 触发初始化用户信息 pinia
-	await userInfoStore().setUserInfos();
+	await userStore().setUserInfos();
 	// 获取路由菜单数据
 	const res = await getBackEndControlRoutes();
 	// 无登录权限时，添加判断
@@ -106,7 +106,7 @@ export async function setAddRoute() {
  */
 export function getBackEndControlRoutes() {
 	// 模拟 admin 与 test
-	const stores = userInfoStore(pinia);
+	const stores = userStore(pinia);
 	const { userInfos } = storeToRefs(stores);
 	const auth = userInfos.value.roles[0];
 	// 管理员 admin

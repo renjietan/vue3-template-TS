@@ -74,7 +74,7 @@
 
 `2022.07.10`
 
-⚡⚡⚡ [/sec/stores/userInfo.ts](https://gitee.com/lyt-top/vue-next-admin/blob/master/src/stores/userInfo.ts) 下添加了 `getApiUserInfo` 接口模拟数据 `setTimeout` 为 3 秒
+⚡⚡⚡ [/sec/stores/user.ts](https://gitee.com/lyt-top/vue-next-admin/blob/master/src/stores/user.ts) 下添加了 `getApiUserInfo` 接口模拟数据 `setTimeout` 为 3 秒
 
 - 🌟 更新 依赖更新最新版本
 - 🐞 修复 [主界面重新授权按钮点击卡死不跳转登录界面#I5C3JS](https://gitee.com/lyt-top/vue-next-admin/issues/I5C3JS)，感谢[@Hero-Typ](https://gitee.com/tian_yu_peng)

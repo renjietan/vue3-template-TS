@@ -5,7 +5,7 @@
 <script setup lang="ts" name="auths">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { userInfoStore } from '@/stores/userInfo';
+import { userStore } from '@/stores/user';
 
 // 定义父组件传过来的值
 const props = defineProps({
@@ -16,7 +16,7 @@ const props = defineProps({
 });
 
 // 定义变量内容
-const stores = userInfoStore();
+const stores = userStore();
 const { userInfos } = storeToRefs(stores);
 
 // 获取 pinia 中的用户权限

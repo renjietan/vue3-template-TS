@@ -23,8 +23,8 @@
 		</el-form-item>
 		<el-form-item class="login-animation3">
 			<el-col :span="15">
-				<el-input text maxlength="4" :placeholder="$t('message.account.accountPlaceholder3')"
-					v-model="state.form_data.code" clearable autocomplete="off">
+				<el-input text maxlength="4" placeholder="请输入验证码" v-model="state.form_data.code" clearable
+					autocomplete="off">
 					<template #prefix>
 						<el-icon class="el-input__icon"><ele-Position /></el-icon>
 					</template>
@@ -37,7 +37,7 @@
 		</el-form-item>
 		<el-form-item class="login-animation4">
 			<el-button type="primary" class="login-content-submit" round v-waves @click="onSignIn"
-				:loading="state.signIn">
+				:loading="state.loading">
 				<span>登录</span>
 			</el-button>
 		</el-form-item>
@@ -47,21 +47,16 @@
 <script setup lang="ts" name="loginAccount">
 	import { reactive, computed } from 'vue';
 	import { useRoute, useRouter } from 'vue-router';
-	import { ElMessage } from 'element-plus';
-	import { useI18n } from 'vue-i18n';
+	import { ElNotification } from 'element-plus';
 	import Cookies from 'js-cookie';
 	import { storeToRefs } from 'pinia';
-	import { useThemeConfig } from '@/stores/themeConfig';
-	import { userInfoStore } from "@/stores/userInfo";
+	import { userStore } from "@/stores/user";
 	import { initFrontEndControlRoutes } from '@/router/frontEnd';
 	import { initBackEndControlRoutes } from '@/router/backEnd';
 	import { Session } from '@/utils/storage';
 	import { formatAxis } from '@/utils/formatTime';
 	import { NextLoading } from '@/utils/loading';
 	// 定义变量内容
-	const { t } = useI18n();
-	const storesThemeConfig = useThemeConfig();
-	const { themeConfig } = storeToRefs(storesThemeConfig);
 	const route = useRoute();
 	const router = useRouter();
 	const state = reactive({
@@ -77,18 +72,23 @@
 	// 登录
 	const onSignIn = async () => {
 		state.loading = true;
-		userInfoStore().userLogin(state.form_data)
-		return
-		Session.set('token', Math.random().toString(36).substr(0));
-		Cookies.set('userName', state.form_data.userName);
-		if (route.query?.redirect) {
-			router.push({
-				path: route.query?.redirect,
-				query: Object.keys(route.query?.params).length > 0 ? JSON.parse(route.query?.params) : '',
-			});
-		} else {
-			router.push('/');
-		}
+		userStore().login(state.form_data).then(res => {
+			state.loading = false
+			ElNotification({
+				title: "提示",
+				type: "success",
+				message: "登录成功"
+			})
+			if (route.query?.redirect) {
+				router.push({
+					path: route.query?.redirect,
+					query: Object.keys(route.query?.params).length > 0 ? JSON.parse(route.query?.params) : '',
+				});
+			} else {
+				router.push('/');
+			}
+		})
+
 		// TODO(2023-03-16 11:24:56 谭人杰): 删除
 		// if (!themeConfig.value.isRequestRoutes) {
 		// 	// 前端控制路由，2、请注意执行顺序
@@ -121,7 +121,7 @@
 	// 		}
 	// 		// 登录成功提示
 	// 		ElMessage.success(`登录成功`);
-	// 		// 添加 loading，防止第一次进入界面时出现短暂空白	
+	// 		// 添加 loading，防止第一次进入界面时出现短暂空白
 	// 		NextLoading.start();
 	// 	}
 	// 	state.loading.signIn = false;
