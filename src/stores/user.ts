@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import Cookies from 'js-cookie';
 import { Session } from '@/utils/storage';
 import { login } from "@/api/login/index";
-import { dynamicRoutes } from '@/router/route'
+import { routerList } from '@/stores/permission'
 import router from '@/router';
 const layouModules: any = import.meta.glob('../layout/routerView/*.{vue,tsx}');
 const viewsModules: any = import.meta.glob('../views/**/*.{vue,tsx}');
@@ -77,8 +77,13 @@ export const userStore = defineStore('userInfo', {
 		},
 		setMenus() {
 			return new Promise(async (resolve, reject) => {
-				dynamicRoutes[0].children = await backEndComponent(dynamicRoutes[0].children);
-				resolve(dynamicRoutes)
+				const a = await backEndComponent(routerList[0].children);
+				debugger
+				// for (let index = 0; index < a.length; index++) {
+				// 	const element = a[index];
+				// 	router.addRoute(element)
+				// }
+				resolve(routerList)
 			})
 		},
 		async setUserInfos() {
