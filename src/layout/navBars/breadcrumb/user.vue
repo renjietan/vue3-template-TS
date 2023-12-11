@@ -78,6 +78,7 @@
 		</el-dropdown>
 		<Search ref="searchRef" />
 	</div>
+	<!-- <div class="test"></div> -->
 </template>
 
 <script setup lang="ts" name="layoutBreadcrumbUser">
@@ -211,6 +212,11 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+/* .test {
+	width: 200px;
+	height: 200px;
+	background: $baseColor;
+} */
 .layout-navbars-breadcrumb-user {
 	display: flex;
 	align-items: center;

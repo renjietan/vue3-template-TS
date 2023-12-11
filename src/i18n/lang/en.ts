@@ -2,6 +2,8 @@
 export default {
 	router: {
 		home: 'home',
+		cesium: 'cesium',
+		test0: 'test0',
 		system: 'system',
 		systemMenu: 'systemMenu',
 		systemRole: 'systemRole',

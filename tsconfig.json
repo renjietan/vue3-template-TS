@@ -49,7 +49,7 @@
 		} /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
 		// "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
 		// "typeRoots": [],                       /* List of folders to include type definitions from. */
-		"types": ["vite/client"] /* Type declaration files to be included in compilation. */,
+		"types": ["vite/client", "vue-cesium/global", "vue-cesium/Cesium"] /* Type declaration files to be included in compilation. */,
 		"allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
 		"esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
 		// "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
@@ -70,6 +70,6 @@
 		"forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
 		"suppressImplicitAnyIndexErrors": true
 	},
-	"include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.tsx", "src/**/*.d.ts"], // **Represents any directory, and * represents any file. Indicates that all files in the src directory will be compiled
+	"include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.tsx", "src/**/*.d.ts", "src/**/*", "node_modules/vue-cesium/Cesium.d.ts", "node_modules/vue-cesium/global.d.ts"], // **Represents any directory, and * represents any file. Indicates that all files in the src directory will be compiled
 	"exclude": ["node_modules", "dist"] // Indicates the file directory that does not need to be compiled
 }

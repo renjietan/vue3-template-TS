@@ -39,6 +39,8 @@ const getVersion = computed(() => {
 	let isVersion = false;
 	if (route.path !== '/login') {
 		// @ts-ignore
+		let version = Local.get('version')
+		console.log("version=============",version);
 		if ((Local.get('version') && Local.get('version') !== __VERSION__) || !Local.get('version')) isVersion = true;
 	}
 	return isVersion;

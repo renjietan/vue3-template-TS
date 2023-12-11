@@ -52,7 +52,12 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 				},
 			},
 		},
-		css: { preprocessorOptions: { css: { charset: false } } },
+		css: {
+			preprocessorOptions: { css: { charset: false }, 
+			//NOTE(@date:2023-11-13 17:15:34 谭人杰): 自动引入SCSS 不用每个文件都用 @import "/@/styles/index.scss"
+			scss: { additionalData: '@use "/@/styles/index.scss" as *;' } 
+		},
+		},
 		define: {
 			__VUE_I18N_LEGACY_API__: JSON.stringify(false),
 			__VUE_I18N_FULL_INSTALL__: JSON.stringify(false),

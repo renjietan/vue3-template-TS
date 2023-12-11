@@ -11,9 +11,12 @@ import 'element-plus/dist/index.css';
 import '/@/theme/index.scss';
 import VueGridLayout from 'vue-grid-layout';
 
+import VueCesium from 'vue-cesium';
+import 'vue-cesium/dist/index.css';
+
 const app = createApp(App);
 
 directive(app);
 other.elSvg(app);
 
-app.use(pinia).use(router).use(ElementPlus, { i18n: i18n.global.t }).use(i18n).use(VueGridLayout).mount('#app');
+app.use(pinia).use(router).use(ElementPlus, { i18n: i18n.global.t }).use(i18n).use(VueGridLayout).use(VueCesium).mount('#app');

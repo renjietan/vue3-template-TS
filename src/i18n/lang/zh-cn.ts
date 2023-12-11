@@ -2,6 +2,8 @@
 export default {
 	router: {
 		home: '首页',
+		cesium: '3D地图',
+		test0: 'test0',
 		system: '系统设置',
 		systemMenu: '菜单管理',
 		systemRole: '角色管理',
