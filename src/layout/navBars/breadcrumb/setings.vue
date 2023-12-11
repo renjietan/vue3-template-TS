@@ -658,7 +658,7 @@
 			if (!Local.get('frequency')) initLayoutChangeFun();
 			Local.set('frequency', 1);
 			// 监听窗口大小改变，非默认布局，设置成默认布局（适配移动端）
-			mittBus.on('layoutMobileResize', (res: LayoutMobileResize) => {
+			mittBus.on('layoutMobileResize', (res) => {
 				getThemeConfig.value.layout = res.layout;
 				getThemeConfig.value.isDrawer = false;
 				initLayoutChangeFun();
