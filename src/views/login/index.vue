@@ -27,22 +27,21 @@
 <script setup lang="ts" name="loginIndex">
 import { defineAsyncComponent, onMounted, reactive, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useThemeConfig } from '/@/stores/themeConfig';
-import { NextLoading } from '/@/utils/loading';
+import { useThemeConfig } from '@/stores/themeConfig';
+import { NextLoading } from '@/utils/loading';
 
-// 引入组件
-const Account = defineAsyncComponent(() => import('/@/views/login/component/account.vue'));
-const Mobile = defineAsyncComponent(() => import('/@/views/login/component/mobile.vue'));
+// NOTE(2023-03-16 13:56:51 谭人杰): 引入组件
+const Account = defineAsyncComponent(() => import('@/views/login/component/account.vue'));
+const Mobile = defineAsyncComponent(() => import('@/views/login/component/mobile.vue'));
 
-// 定义变量内容
+// NOTE(2023-03-16 13:56:58 谭人杰): 定义变量
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const state = reactive({
 	tabsActiveName: 'account',
 	isScan: false,
 });
-
-// 获取布局配置信息
+// NOTE(2023-03-16 13:57:07 谭人杰): 获取基础配置信息
 const getThemeConfig = computed(() => {
 	return themeConfig.value;
 });

@@ -8,7 +8,7 @@ const pathResolve = (dir: string) => {
 };
 
 const alias: Record<string, string> = {
-	'/@': pathResolve('./src/'),
+	'@': pathResolve('./src/'),
 	'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
 };
 
@@ -28,12 +28,11 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 			open: env.VITE_OPEN,
 			hmr: true,
 			proxy: {
-				'/gitee': {
-					target: 'https://gitee.com',
-					ws: true,
-					changeOrigin: true,
-					rewrite: (path) => path.replace(/^\/gitee/, ''),
-				},
+				"^/api": {
+					target: "http://192.168.1.159:3000", // 真实接口地址, 后端给的基地址
+					changeOrigin: true, // 允许跨域
+					rewrite: (path) => path.replace(/^\/api/, ""),
+				  },
 			},
 		},
 		build: {

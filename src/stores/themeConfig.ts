@@ -120,7 +120,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 
 			/**
 			 * 布局切换
-			 * 注意：为了演示，切换布局时，颜色会被还原成默认，代码位置：/@/layout/navBars/breadcrumb/setings.vue
+			 * 注意：为了演示，切换布局时，颜色会被还原成默认，代码位置：@/layout/navBars/breadcrumb/setings.vue
 			 * 中的 `initSetLayoutChange(设置布局切换，重置主题样式)` 方法
 			 */
 			// 布局切换：可选值"<defaults|classic|transverse|columns>"，默认 defaults
@@ -130,6 +130,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 后端控制路由
 			 */
 			// 是否开启后端控制路由
+			//TODO(@date:2023-03-19 15:46:41 谭人杰): $删除
 			isRequestRoutes: false,
 
 			/**

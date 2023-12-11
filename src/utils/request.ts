@@ -1,7 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Session } from '/@/utils/storage';
+import { Session } from '@/utils/storage';
 import qs from 'qs';
+import Cookies from 'js-cookie';
 
 // 配置新建一个 axios 实例
 const service: AxiosInstance = axios.create({
@@ -19,7 +20,7 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
 	(config: AxiosRequestConfig) => {
 		// 在发送请求之前做些什么 token
-		if (Session.get('token')) {
+		if (Cookies.get('token')) {
 			config.headers!['Authorization'] = `${Session.get('token')}`;
 		}
 		return config;
@@ -35,7 +36,7 @@ service.interceptors.response.use(
 	(response) => {
 		// 对响应数据做点什么
 		const res = response.data;
-		if (res.code && res.code !== 0) {
+		if (res.code && res.code !== 20000) {
 			// `token` 过期或者账号已在别处登录
 			if (res.code === 401 || res.code === 4001) {
 				Session.clear(); // 清除浏览器全部临时缓存
@@ -46,7 +47,7 @@ service.interceptors.response.use(
 			}
 			return Promise.reject(service.interceptors.response);
 		} else {
-			return response.data;
+			return res;
 		}
 	},
 	(error) => {

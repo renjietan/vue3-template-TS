@@ -11,6 +11,7 @@ declare interface UserInfosState<T = any> {
 		time: number;
 		userName: string;
 		[key: string]: T;
+		userInfo: object;
 	};
 }
 

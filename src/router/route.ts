@@ -1224,7 +1224,7 @@ export const notFoundAndNoPower = [
 	{
 		path: '/:path(.*)*',
 		name: 'notFound',
-		component: () => import('/@/views/error/404.vue'),
+		component: () => import('@/views/error/404.vue'),
 		meta: {
 			title: 'message.staticRoutes.notFound',
 			hidden: true,
@@ -1233,7 +1233,7 @@ export const notFoundAndNoPower = [
 	{
 		path: '/401',
 		name: 'noPower',
-		component: () => import('/@/views/error/401.vue'),
+		component: () => import('@/views/error/401.vue'),
 		meta: {
 			title: 'message.staticRoutes.noPower',
 			hidden: true,
@@ -1251,7 +1251,7 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/login',
 		name: 'login',
-		component: () => import('/@/views/login/index.vue'),
+		component: () => import('@/views/login/index.vue'),
 		meta: {
 			title: '登录',
 		},
@@ -1263,7 +1263,7 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/visualizingDemo1',
 		name: 'visualizingDemo1',
-		component: () => import('/@/views/visualizing/demo1.vue'),
+		component: () => import('@/views/visualizing/demo1.vue'),
 		meta: {
 			title: 'message.router.visualizingLinkDemo1',
 		},
@@ -1271,7 +1271,7 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 	{
 		path: '/visualizingDemo2',
 		name: 'visualizingDemo2',
-		component: () => import('/@/views/visualizing/demo2.vue'),
+		component: () => import('@/views/visualizing/demo2.vue'),
 		meta: {
 			title: 'message.router.visualizingLinkDemo2',
 		},

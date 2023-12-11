@@ -1,15 +1,17 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import pinia from '/@/stores/index';
+import pinia from '@/stores/index';
+import Cookies from 'js-cookie';
 import { storeToRefs } from 'pinia';
-import { useKeepALiveNames } from '/@/stores/keepAliveNames';
-import { useRoutesList } from '/@/stores/routesList';
-import { useThemeConfig } from '/@/stores/themeConfig';
-import { Session } from '/@/utils/storage';
-import { staticRoutes, notFoundAndNoPower } from '/@/router/route';
-import { initFrontEndControlRoutes } from '/@/router/frontEnd';
-import { initBackEndControlRoutes } from '/@/router/backEnd';
+import { useKeepALiveNames } from '@/stores/keepAliveNames';
+import { useRoutesList } from '@/stores/routesList';
+import { useThemeConfig } from '@/stores/themeConfig';
+import { userStore } from '@/stores/user';
+import { Session } from '@/utils/storage';
+import { staticRoutes, notFoundAndNoPower } from '@/router/route';
+import { initFrontEndControlRoutes } from '@/router/frontEnd';
+import { initBackEndControlRoutes } from '@/router/backEnd';
 
 /**
  * 1、前端控制路由时：isRequestRoutes 为 false，需要写 roles，需要走 setFilterRoute 方法。
@@ -79,7 +81,7 @@ export function formatTwoStageRoutes(arr: any) {
 			}
 			newArr[0].children.push({ ...v });
 			// 存 name 值，keep-alive 中 include 使用，实现路由的缓存
-			// 路径：/@/layout/routerView/parent.vue
+			// 路径：@/layout/routerView/parent.vue
 			if (newArr[0].meta.isKeepAlive && v.meta.isKeepAlive) {
 				cacheList.push(v.name);
 				const stores = useKeepALiveNames(pinia);
@@ -89,42 +91,75 @@ export function formatTwoStageRoutes(arr: any) {
 	});
 	return newArr;
 }
-
+NProgress.configure({ showSpinner: false });
 // 路由加载前
 router.beforeEach(async (to, from, next) => {
-	NProgress.configure({ showSpinner: false });
-	if (to.meta.title) NProgress.start();
-	const token = Session.get('token');
-	if (to.path === '/login' && !token) {
-		next();
-		NProgress.done();
-	} else {
-		if (!token) {
-			next(`/login?redirect=${to.path}&params=${JSON.stringify(to.query ? to.query : to.params)}`);
-			Session.clear();
-			NProgress.done();
-		} else if (token && to.path === '/login') {
-			next('/home');
-			NProgress.done();
+	NProgress.start();
+	const hasToken = Cookies.get("token")
+	if (hasToken) {
+		if (to.path === '/login') {
+			next({ path: '/' })
+			NProgress.done()
 		} else {
-			const storesRoutesList = useRoutesList(pinia);
+			const storesRoutesList = useRoutesList();
 			const { routesList } = storeToRefs(storesRoutesList);
-			if (routesList.value.length === 0) {
-				if (isRequestRoutes) {
-					// 后端控制路由：路由数据初始化，防止刷新时丢失
-					await initBackEndControlRoutes();
-					// 解决刷新时，一直跳 404 页面问题，关联问题 No match found for location with path 'xxx'
-					// to.query 防止页面刷新时，普通路由带参数时，参数丢失。动态路由（xxx/:id/:name"）isDynamic 无需处理
-					next({ path: to.path, query: to.query });
-				} else {
-					await initFrontEndControlRoutes();
-					next({ path: to.path, query: to.query });
-				}
+			if (routesList.value.length > 0) {
+				next()
 			} else {
-				next();
+				try {
+					await userStore().setMenus()
+					debugger
+					NProgress.done()
+					debugger
+					// const { id } = await store.dispatch('user/getUserInfo')
+					// const accessRoutes = await store.dispatch('permission/generateRoutes', id)
+
+					// const flatRoutes = deepClone(accessRoutes, ['component'])
+					// const temp = getFlatRoutes(flatRoutes)
+					// router.addRoutes(temp);
+					// next({ ...to, replace: true })
+				} catch (error) {
+					// await store.dispatch('user/resetToken')
+					// Message.error(error || '获取权限出现未知错误')
+					// next(`/login?redirect=${to.path}`)
+					// NProgress.done()
+				}
 			}
 		}
 	}
+	// if (to.meta.title) NProgress.start();
+
+	// const token = Cookies.get('token');
+	// if (to.path === '/login' && !token) {
+	// 	next();
+	// 	NProgress.done();
+	// } else {
+	// 	if (!token) {
+	// 		next(`/login?redirect=${to.path}&params=${JSON.stringify(to.query ? to.query : to.params)}`);
+	// 		Session.clear();
+	// 		NProgress.done();
+	// 	} else if (token && to.path === '/login') {
+	// 		next('/home');
+	// 		NProgress.done();
+	// 	} else {
+	// 		const storesRoutesList = useRoutesList(pinia);
+	// 		const { routesList } = storeToRefs(storesRoutesList);
+	// 		debugger
+	// 		if (routesList.value.length === 0) {
+	// 			if (isRequestRoutes) {
+	// 				// 后端控制路由：路由数据初始化，防止刷新时丢失
+	// 				await initBackEndControlRoutes();
+	// 				// 解决刷新时，一直跳 404 页面问题，关联问题 No match found for location with path 'xxx'
+	// 				// to.query 防止页面刷新时，普通路由带参数时，参数丢失。动态路由（xxx/:id/:name"）isDynamic 无需处理
+	// 			} else {
+	// 				await initFrontEndControlRoutes();
+	// 			}
+	// 			next({ path: to.path, query: to.query });
+	// 		} else {
+	// 			next();
+	// 		}
+	// 	}
+	// }
 });
 
 // 路由加载后
