@@ -81,21 +81,6 @@ export const notFoundAndNoPower = [
 		},
 	},
 	{
-		path: '/login',
-		name: 'login',
-		component: () => import('/@/views/login/index.vue'),
-		meta: {
-			title: 'message.router.login',
-			ExternalLink: '',
-			hidden: false,
-			cache: true,
-			affix: true,
-			isIframe: false,
-			roles: ['admin', 'common'],
-			icon: 'iconfont icon-shouye',
-		},
-	},
-	{
 		path: '/401',
 		name: 'noPower',
 		component: () => import('/@/views/error/401.vue'),
@@ -122,7 +107,7 @@ export const staticRoutes: Array<RouteRecordRaw> = [
 		},
 	},
 	/**
-	 * 提示：写在这里的为全屏界面
+	 * 提示：写在这里的为全屏界面，不建议写在这里
 	 * 请写在 `dynamicRoutes` 路由数组中
 	 */
 	{
